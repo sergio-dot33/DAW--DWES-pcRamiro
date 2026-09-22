@@ -120,11 +120,21 @@
                 </p>
 
                  <p class="precio">
-                    <?= formatearPrecio($producto["precio"]) ?>
+                    <?= 
+                        formatearPrecio($producto["precio"]) 
+                    ?>
                 </p>
                 <p>
                     Stock:
-                    <?= $producto["stock"] ?>
+                    <?= 
+                        $producto["stock"] 
+                    ?>
+                </p>
+                <p class="estado <?= obtenerClaseEstado($producto["stock"]); ?>">
+                    Estado:
+                    <?= 
+                        obtenerEstadoStock($producto["stock"]); 
+                    ?>
                 </p>
 
             </article>

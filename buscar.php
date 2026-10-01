@@ -3,7 +3,13 @@
     require_once "datos.php";
     require_once "funciones.php";
 
+    $busqueda = leerCadena($_GET, "q");
+
     $resultados = [];
+
+    if ($busqueda !== ""){
+        $resultados = buscarProducto($productos, $busqueda);
+    }
 
 ?>
 
@@ -61,24 +67,30 @@
     </section>
 
     <section class="panel">
-        <h2>Ejemplo de resultados</h2>
-        <p>
-            Como esta versión no tiene PHP, estos resultados son estáticos.
-        </p>
+
+        <h2> Resultados para: "<?= escapar($busqueda)?>"</h2>
+        <?php if($resultados === []): ?>
+            <p>No se han encontrado productos</p>
+        <?php else: ?>
+            <p>Se han encontrado <?= count($resultados) ?> productos(s). </p>
+        <?php endif; ?>
     </section>
 
-    <section class="grid-productos">
+    <?php if($resultados !== []): ?>
+        <section class="grid-productos">
+            <?php foreach ($resultados as $producto):?>
+                <article class="prodcuto">
+                    <h3><?= escapar($producto["nombre"]) ?></h3>
+                    <p><?= escapar($producto["categoria"]) ?></p>
+                    <p><?= formatearPrecio($producto["precio"]) ?></p>
 
-        <article class="producto">
-            <h3>Teclado mecánico</h3>
-            <p>Periféricos</p>
-            <p class="precio">79,90 €</p>
-            <a class="boton" href="producto.php">
-                Ver producto
-            </a>
-        </article>
+                </article>
 
-    </section>
+            <?php endforeach; ?>
+            
+        </section>
+
+    <?php endif; ?>
 
 </main>
 

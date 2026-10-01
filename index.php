@@ -1,7 +1,30 @@
 <?php
  
-  require_once "funciones.php";
-  require_once "datos.php";
+require_once "funciones.php";
+require_once "datos.php";
+
+$orden = leerCadena($_GET, "orden");
+
+if ($orden === ""){
+    $orden = "id";
+}
+
+$productosOrdenados = $productos;
+
+if ($orden === "nombre") {
+    usort(  $productosOrdenados , function (array $a, array $b): int {
+        return $a["nombre"] <=> $b["nombre"];
+    });    
+} elseif ($orden === "precio") {
+    usort(  $productosOrdenados , function (array $a, array $b): int {
+        return $a["precio"] <=> $b["precio"];
+    }); 
+} else {     
+    $orden = "id";
+    usort(  $productosOrdenados , function (array $a, array $b): int {
+        return $a["id"] <=> $b["id"];
+    });
+}
 
 
 ?>
@@ -96,6 +119,12 @@
     <section class="panel">
 
         <h2>Catálogo</h2>
+        <p>Orden actual: </p>
+        <nav class="navegacion">
+            <a href="index.php?orden=id">Por id</a>
+            <a href="index.php?orden=nombre">Por nombre</a>
+            <a href="index.php?orden=precio">Por precio</a>
+        </nav>
 
     </section>
 
@@ -107,7 +136,7 @@
 
     <section class="grid-productos">
 
-        <?php foreach ($productos as $producto) {  ?>
+        <?php foreach ($productosOrdenados as $producto) {  ?>
 
             <article class= "producto"> 
                 <h2>
